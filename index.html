@@ -396,7 +396,6 @@ body {
 
     </section>
 
-
     <!-- MONTHLY DIARY -->
 
     <div class="section-title">
@@ -427,7 +426,6 @@ body {
 
     </div>
 
-
     <section class="diary">
 
         <div class="month-heading">
@@ -443,7 +441,6 @@ body {
 
         </div>
 
-
         <!-- WEEKDAYS -->
 
         <div class="weekdays">
@@ -458,13 +455,11 @@ body {
 
         </div>
 
-
         <!-- CALENDAR -->
 
         <div class="calendar"
              id="calendar">
         </div>
-
 
         <!-- MONTH SUMMARY -->
 
@@ -488,7 +483,6 @@ body {
 
     </section>
 
-
     <!-- TOTAL -->
 
     <section class="total-section">
@@ -509,14 +503,12 @@ body {
 
     </section>
 
-
     <div class="note">
         ※ 件数を入力すると自動的に保存・集計されます。<br>
         ※ 1件＝600円
     </div>
 
 </div>
-
 
 <script>
 
@@ -539,7 +531,6 @@ const monthNames = {
 
 let currentMonth = 9;
 
-
 /* =========================
    保存データ
 ========================= */
@@ -560,7 +551,6 @@ function getData() {
     }
 }
 
-
 function saveData(data) {
 
     localStorage.setItem(
@@ -568,7 +558,6 @@ function saveData(data) {
         JSON.stringify(data)
     );
 }
-
 
 /* =========================
    日付キー
@@ -579,7 +568,6 @@ function dateKey(year, month, day) {
     return `${year}-${String(month).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
 
 }
-
 
 /* =========================
    月を表示
@@ -609,7 +597,6 @@ function showMonth(month) {
 
 }
 
-
 /* =========================
    カレンダー生成
 ========================= */
@@ -633,7 +620,6 @@ function renderCalendar() {
 
     const data = getData();
 
-
     /* 空白 */
 
     for (let i = 0; i < firstDay; i++) {
@@ -646,7 +632,6 @@ function renderCalendar() {
         calendar.appendChild(empty);
 
     }
-
 
     /* 日付 */
 
@@ -668,7 +653,6 @@ function renderCalendar() {
                 day
             );
 
-
         /* 開始日前 */
 
         if (currentDate < START_DATE) {
@@ -676,7 +660,6 @@ function renderCalendar() {
             cell.classList.add("disabled");
 
         }
-
 
         /* 今日 */
 
@@ -692,7 +675,6 @@ function renderCalendar() {
 
         }
 
-
         const dateLabel =
             document.createElement("div");
 
@@ -700,7 +682,6 @@ function renderCalendar() {
             "date-number";
 
         dateLabel.textContent = day;
-
 
         const input =
             document.createElement("input");
@@ -717,7 +698,6 @@ function renderCalendar() {
 
         input.placeholder = "件";
 
-
         const key =
             dateKey(
                 year,
@@ -725,20 +705,17 @@ function renderCalendar() {
                 day
             );
 
-
         if (data[key] !== undefined) {
 
             input.value = data[key];
 
         }
 
-
         if (currentDate < START_DATE) {
 
             input.disabled = true;
 
         }
-
 
         input.addEventListener(
             "input",
@@ -770,7 +747,6 @@ function renderCalendar() {
                         ? ""
                         : value;
 
-
                 const latest =
                     getData();
 
@@ -794,7 +770,6 @@ function renderCalendar() {
             }
         );
 
-
         cell.appendChild(dateLabel);
 
         cell.appendChild(input);
@@ -804,7 +779,6 @@ function renderCalendar() {
     }
 
 }
-
 
 /* =========================
    全体集計
@@ -823,7 +797,6 @@ function calculateTotals() {
 
         });
 
-
     const totalMoney =
         totalJobs * UNIT_PRICE;
 
@@ -839,7 +812,6 @@ function calculateTotals() {
             (totalMoney / GOAL) * 100
         );
 
-
     return {
         totalJobs,
         totalMoney,
@@ -848,7 +820,6 @@ function calculateTotals() {
     };
 
 }
-
 
 /* =========================
    月間集計
@@ -866,7 +837,6 @@ function calculateMonth(month) {
             month,
             0
         ).getDate();
-
 
     for (
         let day = 1;
@@ -886,14 +856,12 @@ function calculateMonth(month) {
 
     }
 
-
     return {
         jobs,
         money: jobs * UNIT_PRICE
     };
 
 }
-
 
 /* =========================
    ダッシュボード更新
@@ -904,58 +872,48 @@ function updateDashboard() {
     const totals =
         calculateTotals();
 
-
     document.getElementById(
         "totalMoney"
     ).textContent =
         yen(totals.totalMoney);
-
 
     document.getElementById(
         "remainingMoney"
     ).textContent =
         yen(totals.remaining);
 
-
     document.getElementById(
         "totalJobs"
     ).textContent =
         `${totals.totalJobs}件`;
-
 
     document.getElementById(
         "progressPercent"
     ).textContent =
         `${totals.percent.toFixed(1)}%`;
 
-
     document.getElementById(
         "progressFill"
     ).style.width =
         `${totals.percent}%`;
-
 
     document.getElementById(
         "totalMoneyBottom"
     ).textContent =
         yen(totals.totalMoney);
 
-
     document.getElementById(
         "totalSub"
     ).textContent =
         `目標 ${yen(GOAL)}`;
 
-
     const month =
         calculateMonth(currentMonth);
-
 
     document.getElementById(
         "monthJobs"
     ).textContent =
         `${month.jobs}件`;
-
 
     document.getElementById(
         "monthMoney"
@@ -963,7 +921,6 @@ function updateDashboard() {
         yen(month.money);
 
 }
-
 
 /* =========================
    円表示
@@ -976,7 +933,6 @@ function yen(number) {
             .toLocaleString("ja-JP");
 
 }
-
 
 /* =========================
    初期化
