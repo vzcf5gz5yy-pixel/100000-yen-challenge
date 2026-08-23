@@ -1,1 +1,990 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
 
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="10万円チャレンジ">
+
+<title>10万円チャレンジ｜Monthly Diary</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    background: #f6f6f4;
+    color: #333;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Helvetica Neue",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        sans-serif;
+}
+
+.app {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 18px 14px 40px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    background: #fff;
+    border-radius: 22px;
+    padding: 22px 20px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.04);
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    margin-bottom: 5px;
+}
+
+.period {
+    color: #888;
+    font-size: 12px;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 18px;
+}
+
+.card {
+    background: #fafafa;
+    border-radius: 16px;
+    padding: 13px 12px;
+}
+
+.card-label {
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.card-value {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.progress-card {
+    grid-column: 1 / -1;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 9px;
+    background: #e8e8e5;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #777;
+    border-radius: 20px;
+    transition: width .25s ease;
+}
+
+/* =========================
+   MONTH NAVIGATION
+========================= */
+
+.section-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 22px 3px 10px;
+}
+
+.month-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.month-tab {
+    border: 0;
+    background: #e9e9e6;
+    color: #888;
+    border-radius: 12px;
+    padding: 9px 0;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.month-tab.active {
+    background: #333;
+    color: #fff;
+}
+
+/* =========================
+   MONTHLY DIARY
+========================= */
+
+.diary {
+    background: #fff;
+    border-radius: 22px;
+    padding: 19px 13px 17px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.04);
+}
+
+.month-heading {
+    text-align: center;
+    margin-bottom: 17px;
+}
+
+.month-number {
+    font-size: 11px;
+    color: #aaa;
+    letter-spacing: .14em;
+}
+
+.month-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    margin-top: 2px;
+}
+
+.weekdays,
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.weekdays {
+    margin-bottom: 6px;
+}
+
+.weekday {
+    text-align: center;
+    color: #999;
+    font-size: 9px;
+    padding-bottom: 4px;
+}
+
+.day {
+    min-width: 0;
+    min-height: 62px;
+    border: 1px solid #ededeb;
+    border-radius: 10px;
+    padding: 5px 4px;
+    background: #fff;
+    position: relative;
+}
+
+.day.empty {
+    border: 0;
+    background: transparent;
+}
+
+.date-number {
+    font-size: 10px;
+    color: #777;
+    line-height: 1;
+}
+
+.job-input {
+    width: 100%;
+    border: 0;
+    outline: none;
+    background: #f7f7f5;
+    border-radius: 7px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    padding: 8px 1px;
+    margin-top: 7px;
+}
+
+.job-input:focus {
+    background: #ededeb;
+}
+
+.day.disabled {
+    opacity: .3;
+}
+
+.day.today {
+    border: 1.5px solid #777;
+}
+
+/* =========================
+   MONTH SUMMARY
+========================= */
+
+.month-summary {
+    margin-top: 15px;
+    background: #f7f7f5;
+    border-radius: 14px;
+    padding: 13px 14px;
+}
+
+.summary-title {
+    font-size: 10px;
+    color: #999;
+    margin-bottom: 6px;
+    letter-spacing: .08em;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding: 3px 0;
+}
+
+.summary-row strong {
+    font-size: 15px;
+}
+
+/* =========================
+   TOTAL SECTION
+========================= */
+
+.total-section {
+    margin-top: 15px;
+    background: #333;
+    color: white;
+    border-radius: 20px;
+    padding: 19px;
+}
+
+.total-title {
+    font-size: 11px;
+    opacity: .6;
+    letter-spacing: .1em;
+    margin-bottom: 9px;
+}
+
+.total-money {
+    font-size: 29px;
+    font-weight: 700;
+}
+
+.total-sub {
+    margin-top: 5px;
+    font-size: 11px;
+    opacity: .65;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.note {
+    text-align: center;
+    color: #aaa;
+    font-size: 10px;
+    margin-top: 17px;
+    line-height: 1.7;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 360px) {
+    .app {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .day {
+        min-height: 58px;
+    }
+
+    .job-input {
+        font-size: 12px;
+        padding: 7px 1px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+    <section class="header">
+
+        <div class="title">
+            10万円チャレンジ｜Monthly Diary
+        </div>
+
+        <div class="period">
+            期間：2026/9/4〜12/31 ｜ 1件＝600円
+        </div>
+
+        <!-- DASHBOARD -->
+        <div class="dashboard">
+
+            <div class="card">
+                <div class="card-label">貯まった金額</div>
+                <div class="card-value" id="totalMoney">
+                    ¥0
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">残り</div>
+                <div class="card-value" id="remainingMoney">
+                    ¥100,000
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">累計件数</div>
+                <div class="card-value" id="totalJobs">
+                    0件
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">達成率</div>
+                <div class="card-value" id="progressPercent">
+                    0%
+                </div>
+            </div>
+
+            <div class="card progress-card">
+
+                <div class="card-label">
+                    10万円までの進捗
+                </div>
+
+                <div class="progress-bar">
+                    <div
+                        class="progress-fill"
+                        id="progressFill">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MONTHLY DIARY -->
+
+    <div class="section-title">
+        Monthly Diary
+    </div>
+
+    <div class="month-tabs">
+
+        <button class="month-tab active"
+                onclick="showMonth(9)">
+            9月
+        </button>
+
+        <button class="month-tab"
+                onclick="showMonth(10)">
+            10月
+        </button>
+
+        <button class="month-tab"
+                onclick="showMonth(11)">
+            11月
+        </button>
+
+        <button class="month-tab"
+                onclick="showMonth(12)">
+            12月
+        </button>
+
+    </div>
+
+
+    <section class="diary">
+
+        <div class="month-heading">
+
+            <div class="month-number">
+                2026
+            </div>
+
+            <div class="month-name"
+                 id="monthName">
+                SEPTEMBER
+            </div>
+
+        </div>
+
+
+        <!-- WEEKDAYS -->
+
+        <div class="weekdays">
+
+            <div class="weekday">日</div>
+            <div class="weekday">月</div>
+            <div class="weekday">火</div>
+            <div class="weekday">水</div>
+            <div class="weekday">木</div>
+            <div class="weekday">金</div>
+            <div class="weekday">土</div>
+
+        </div>
+
+
+        <!-- CALENDAR -->
+
+        <div class="calendar"
+             id="calendar">
+        </div>
+
+
+        <!-- MONTH SUMMARY -->
+
+        <div class="month-summary">
+
+            <div class="summary-title">
+                MONTHLY TOTAL
+            </div>
+
+            <div class="summary-row">
+                <span>件数</span>
+                <strong id="monthJobs">0件</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>金額</span>
+                <strong id="monthMoney">¥0</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TOTAL -->
+
+    <section class="total-section">
+
+        <div class="total-title">
+            TOTAL
+        </div>
+
+        <div class="total-money"
+             id="totalMoneyBottom">
+            ¥0
+        </div>
+
+        <div class="total-sub"
+             id="totalSub">
+            目標 ¥100,000
+        </div>
+
+    </section>
+
+
+    <div class="note">
+        ※ 件数を入力すると自動的に保存・集計されます。<br>
+        ※ 1件＝600円
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   基本設定
+========================= */
+
+const GOAL = 100000;
+const UNIT_PRICE = 600;
+
+const START_DATE = new Date(2026, 8, 4);
+const END_DATE   = new Date(2026, 11, 31);
+
+const monthNames = {
+    9: "SEPTEMBER",
+    10: "OCTOBER",
+    11: "NOVEMBER",
+    12: "DECEMBER"
+};
+
+let currentMonth = 9;
+
+
+/* =========================
+   保存データ
+========================= */
+
+function getData() {
+
+    const saved =
+        localStorage.getItem("savingChallenge2026");
+
+    if (!saved) {
+        return {};
+    }
+
+    try {
+        return JSON.parse(saved);
+    } catch {
+        return {};
+    }
+}
+
+
+function saveData(data) {
+
+    localStorage.setItem(
+        "savingChallenge2026",
+        JSON.stringify(data)
+    );
+}
+
+
+/* =========================
+   日付キー
+========================= */
+
+function dateKey(year, month, day) {
+
+    return `${year}-${String(month).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+
+}
+
+
+/* =========================
+   月を表示
+========================= */
+
+function showMonth(month) {
+
+    currentMonth = month;
+
+    document
+        .querySelectorAll(".month-tab")
+        .forEach((button, index) => {
+
+            button.classList.toggle(
+                "active",
+                index === month - 9
+            );
+
+        });
+
+    document.getElementById("monthName")
+        .textContent = monthNames[month];
+
+    renderCalendar();
+
+    updateDashboard();
+
+}
+
+
+/* =========================
+   カレンダー生成
+========================= */
+
+function renderCalendar() {
+
+    const calendar =
+        document.getElementById("calendar");
+
+    calendar.innerHTML = "";
+
+    const year = 2026;
+
+    const firstDay =
+        new Date(year, currentMonth - 1, 1)
+            .getDay();
+
+    const daysInMonth =
+        new Date(year, currentMonth, 0)
+            .getDate();
+
+    const data = getData();
+
+
+    /* 空白 */
+
+    for (let i = 0; i < firstDay; i++) {
+
+        const empty =
+            document.createElement("div");
+
+        empty.className = "day empty";
+
+        calendar.appendChild(empty);
+
+    }
+
+
+    /* 日付 */
+
+    for (
+        let day = 1;
+        day <= daysInMonth;
+        day++
+    ) {
+
+        const cell =
+            document.createElement("div");
+
+        cell.className = "day";
+
+        const currentDate =
+            new Date(
+                year,
+                currentMonth - 1,
+                day
+            );
+
+
+        /* 開始日前 */
+
+        if (currentDate < START_DATE) {
+
+            cell.classList.add("disabled");
+
+        }
+
+
+        /* 今日 */
+
+        const today = new Date();
+
+        if (
+            currentDate.getFullYear() === today.getFullYear() &&
+            currentDate.getMonth() === today.getMonth() &&
+            currentDate.getDate() === today.getDate()
+        ) {
+
+            cell.classList.add("today");
+
+        }
+
+
+        const dateLabel =
+            document.createElement("div");
+
+        dateLabel.className =
+            "date-number";
+
+        dateLabel.textContent = day;
+
+
+        const input =
+            document.createElement("input");
+
+        input.className = "job-input";
+
+        input.type = "number";
+
+        input.inputMode = "numeric";
+
+        input.min = "0";
+
+        input.max = "99";
+
+        input.placeholder = "件";
+
+
+        const key =
+            dateKey(
+                year,
+                currentMonth,
+                day
+            );
+
+
+        if (data[key] !== undefined) {
+
+            input.value = data[key];
+
+        }
+
+
+        if (currentDate < START_DATE) {
+
+            input.disabled = true;
+
+        }
+
+
+        input.addEventListener(
+            "input",
+            function () {
+
+                let value =
+                    parseInt(
+                        input.value,
+                        10
+                    );
+
+                if (
+                    isNaN(value) ||
+                    value < 0
+                ) {
+
+                    value = 0;
+
+                }
+
+                if (value > 99) {
+
+                    value = 99;
+
+                }
+
+                input.value =
+                    value === 0
+                        ? ""
+                        : value;
+
+
+                const latest =
+                    getData();
+
+                if (
+                    input.value === ""
+                ) {
+
+                    delete latest[key];
+
+                } else {
+
+                    latest[key] =
+                        Number(input.value);
+
+                }
+
+                saveData(latest);
+
+                updateDashboard();
+
+            }
+        );
+
+
+        cell.appendChild(dateLabel);
+
+        cell.appendChild(input);
+
+        calendar.appendChild(cell);
+
+    }
+
+}
+
+
+/* =========================
+   全体集計
+========================= */
+
+function calculateTotals() {
+
+    const data = getData();
+
+    let totalJobs = 0;
+
+    Object.values(data)
+        .forEach(value => {
+
+            totalJobs += Number(value) || 0;
+
+        });
+
+
+    const totalMoney =
+        totalJobs * UNIT_PRICE;
+
+    const remaining =
+        Math.max(
+            0,
+            GOAL - totalMoney
+        );
+
+    const percent =
+        Math.min(
+            100,
+            (totalMoney / GOAL) * 100
+        );
+
+
+    return {
+        totalJobs,
+        totalMoney,
+        remaining,
+        percent
+    };
+
+}
+
+
+/* =========================
+   月間集計
+========================= */
+
+function calculateMonth(month) {
+
+    const data = getData();
+
+    let jobs = 0;
+
+    const days =
+        new Date(
+            2026,
+            month,
+            0
+        ).getDate();
+
+
+    for (
+        let day = 1;
+        day <= days;
+        day++
+    ) {
+
+        const key =
+            dateKey(
+                2026,
+                month,
+                day
+            );
+
+        jobs +=
+            Number(data[key]) || 0;
+
+    }
+
+
+    return {
+        jobs,
+        money: jobs * UNIT_PRICE
+    };
+
+}
+
+
+/* =========================
+   ダッシュボード更新
+========================= */
+
+function updateDashboard() {
+
+    const totals =
+        calculateTotals();
+
+
+    document.getElementById(
+        "totalMoney"
+    ).textContent =
+        yen(totals.totalMoney);
+
+
+    document.getElementById(
+        "remainingMoney"
+    ).textContent =
+        yen(totals.remaining);
+
+
+    document.getElementById(
+        "totalJobs"
+    ).textContent =
+        `${totals.totalJobs}件`;
+
+
+    document.getElementById(
+        "progressPercent"
+    ).textContent =
+        `${totals.percent.toFixed(1)}%`;
+
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        `${totals.percent}%`;
+
+
+    document.getElementById(
+        "totalMoneyBottom"
+    ).textContent =
+        yen(totals.totalMoney);
+
+
+    document.getElementById(
+        "totalSub"
+    ).textContent =
+        `目標 ${yen(GOAL)}`;
+
+
+    const month =
+        calculateMonth(currentMonth);
+
+
+    document.getElementById(
+        "monthJobs"
+    ).textContent =
+        `${month.jobs}件`;
+
+
+    document.getElementById(
+        "monthMoney"
+    ).textContent =
+        yen(month.money);
+
+}
+
+
+/* =========================
+   円表示
+========================= */
+
+function yen(number) {
+
+    return "¥" +
+        Number(number)
+            .toLocaleString("ja-JP");
+
+}
+
+
+/* =========================
+   初期化
+========================= */
+
+showMonth(9);
+
+</script>
+
+</body>
+</html>
